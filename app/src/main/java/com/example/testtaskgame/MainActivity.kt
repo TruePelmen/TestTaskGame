@@ -70,10 +70,8 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            TestTaskGameTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(modifier = Modifier.padding(innerPadding))
-                }
+            TestTaskGameTheme{
+                    MainScreen()
             }
         }
     }
