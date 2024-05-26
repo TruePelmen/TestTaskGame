@@ -12,7 +12,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -63,14 +62,13 @@ fun GameScreen(viewModel: MainViewModel) {
                     .size(50.dp)
             )
         }
+
         Image(
             painter = painterResource(id = R.drawable.spaceship),
             contentDescription = "Spaceship",
             modifier = Modifier
                 .offset(x = spaceshipPosition.x.dp, y = spaceshipPosition.y.dp)
-                .size(100.dp)
+                .size(70.dp)
         )
     }
 }
-
-data class Meteor(val position: Offset)

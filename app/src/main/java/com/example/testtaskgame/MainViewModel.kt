@@ -3,7 +3,6 @@ package com.example.testtaskgame
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.testtaskgame.screens.Meteor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +13,7 @@ import kotlin.random.Random
 class MainViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> get() = _isLoading
+
     private val _spaceshipPosition = MutableStateFlow(Offset(0f, 0f))
     val spaceshipPosition: StateFlow<Offset> = _spaceshipPosition
 
@@ -39,22 +39,19 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private fun generateMeteors(screenWidth: Float) {
-        _meteors.value = List(5) {
-            Meteor(position = Offset(Random.nextFloat() * screenWidth, 0f))
-        }
-    }
-
     private fun initializeMeteors(screenWidth: Float) {
-        val initialMeteors = List(5) {
-            Meteor(position = Offset(Random.nextFloat() * screenWidth, Random.nextFloat() * -screenWidth))
+        val initialMeteors = List(3) {
+            Meteor(
+                position = Offset(Random.nextFloat() * screenWidth, Random.nextFloat() * -screenWidth),
+                speed = Random.nextFloat() * 5 + 5 // Random speed between 5 and 10
+            )
         }
         _meteors.value = initialMeteors
     }
 
     private fun updateMeteors(screenWidth: Float, screenHeight: Float) {
         val newMeteors = _meteors.value.mapNotNull { meteor ->
-            val newY = meteor.position.y + 8
+            val newY = meteor.position.y + meteor.speed
             if (newY > screenHeight) {
                 null
             } else {
@@ -62,8 +59,8 @@ class MainViewModel : ViewModel() {
             }
         }.toMutableList()
 
-        while (newMeteors.size < 5) {
-            newMeteors.add(Meteor(position = Offset(Random.nextFloat() * screenWidth, 0f)))
+        if (Random.nextFloat() < 0.2) { // 20% chance to add a new meteor
+            newMeteors.add(Meteor(position = Offset(Random.nextFloat() * screenWidth, 0f), speed = Random.nextFloat() * 5 + 5))
         }
 
         _meteors.value = newMeteors
@@ -75,7 +72,7 @@ class MainViewModel : ViewModel() {
             val dx = spaceship.x - meteor.position.x
             val dy = spaceship.y - meteor.position.y
             val distance = sqrt(dx * dx + dy * dy)
-            distance < 50
+            distance < 50 // Assumes 50 as collision distance threshold
         }
         if (collision) {
             // Handle collision (e.g., end game)
@@ -95,3 +92,7 @@ class MainViewModel : ViewModel() {
         }
     }
 }
+
+
+
+data class Meteor(val position: Offset, val speed: Float)
