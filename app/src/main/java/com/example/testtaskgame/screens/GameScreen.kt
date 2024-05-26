@@ -34,6 +34,7 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
     val spaceshipPosition by viewModel.spaceshipPosition.collectAsState()
     val meteors by viewModel.meteors.collectAsState()
     val isGameOver by viewModel.isGameOver.collectAsState()
+    val coins by viewModel.coins.collectAsState()
 
     LaunchedEffect(isGameOver) {
         if (isGameOver) {
@@ -71,6 +72,16 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
                 modifier = Modifier
                     .offset(x = meteor.position.x.dp, y = meteor.position.y.dp)
                     .size(50.dp)
+            )
+        }
+
+        coins.forEach { coin ->
+            Image(
+                painter = painterResource(id = R.drawable.coin_image),
+                contentDescription = "Coin",
+                modifier = Modifier
+                    .offset(x = coin.position.x.dp, y = coin.position.y.dp)
+                    .size(30.dp)
             )
         }
 

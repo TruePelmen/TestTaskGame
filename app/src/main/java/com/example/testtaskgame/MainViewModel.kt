@@ -27,6 +27,16 @@ class MainViewModel : ViewModel() {
     private val _isMusicOn  =  MutableStateFlow(true)
     val isMusicOn: StateFlow<Boolean> =_isMusicOn
 
+    private val _coins = MutableStateFlow<List<Coin>>(emptyList())
+    val coins: StateFlow<List<Coin>> = _coins
+
+    private fun initializeCoins(screenWidth: Float) {
+        val initialCoins = List(1) {
+            Coin(position = Offset(Random.nextFloat() * screenWidth, Random.nextFloat() * -screenWidth))
+        }
+        _coins.value = initialCoins
+    }
+
     fun toggleMusic() {
         _isMusicOn.value = !_isMusicOn.value
     }
@@ -37,7 +47,9 @@ class MainViewModel : ViewModel() {
         gameJob.value = viewModelScope.launch {
             while (true) {
                 updateMeteors(screenWidth, screenHeight)
+                updateCoins(screenWidth, screenHeight)
                 checkCollisions()
+                checkCoinCollisions() // Додайте виклик методу перевірки зіткнень з монетками
                 delay(100L)
             }
         }
@@ -70,6 +82,24 @@ class MainViewModel : ViewModel() {
         _meteors.value = newMeteors
     }
 
+    private fun updateCoins(screenWidth: Float, screenHeight: Float) {
+        val newCoins = _coins.value.mapNotNull { coin ->
+            val newY = coin.position.y + 5 // Змініть швидкість руху монетки за вашими потребами
+            if (newY > screenHeight) {
+                null
+            } else {
+                coin.copy(position = Offset(coin.position.x, newY))
+            }
+        }.toMutableList()
+
+        if (Random.nextFloat() < 0.1) { // Змініть шанс з'явлення нової монетки за вашими потребами
+            newCoins.add(Coin(position = Offset(Random.nextFloat() * screenWidth, 0f)))
+        }
+
+        _coins.value = newCoins
+    }
+
+
     private fun checkCollisions() {
         val spaceship = _spaceshipPosition.value
         val collision = _meteors.value.any { meteor ->
@@ -82,6 +112,22 @@ class MainViewModel : ViewModel() {
             _isGameOver.value = true
         }
     }
+
+    private fun checkCoinCollisions() {
+        val spaceship = _spaceshipPosition.value
+        val collectedCoinIndex = _coins.value.indexOfFirst { coin ->
+            val dx = spaceship.x - coin.position.x
+            val dy = spaceship.y - coin.position.y
+            val distance = sqrt(dx * dx + dy * dy)
+            distance < 40 // Встановіть відповідне значення порогу зіткнень з монеткою
+        }
+        if (collectedCoinIndex != -1) {
+            // Видалення зібраної монетки та додавання рахунку гравця
+            _coins.value = _coins.value.toMutableList().apply { removeAt(collectedCoinIndex) }
+            // Додайте код для збільшення рахунку гравця
+        }
+    }
+
 
     fun moveSpaceship(panDelta: Offset, screenWidth: Float, screenHeight: Float) {
         var newPositionX = _spaceshipPosition.value.x + panDelta.x
@@ -112,3 +158,6 @@ class MainViewModel : ViewModel() {
 }
 
 data class Meteor(val position: Offset, val speed: Float)
+
+data class Coin(val position: Offset)
+
