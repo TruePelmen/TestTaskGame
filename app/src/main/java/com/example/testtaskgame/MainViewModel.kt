@@ -3,6 +3,7 @@ package com.example.testtaskgame
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,10 @@ class MainViewModel : ViewModel() {
     val meteors: StateFlow<List<Meteor>> = _meteors
 
     private val _isGameOver = MutableStateFlow(false)
-    val isGameOver: StateFlow<Boolean> = _isGameOver
+    val isGameOver: StateFlow<Boolean> get() = _isGameOver
+
+    private var gameJob = MutableStateFlow<Job?>(null)
+
     fun startLoading() {
         _isLoading.value = true
     }
@@ -32,11 +36,12 @@ class MainViewModel : ViewModel() {
 
     fun startGame(screenWidth: Float, screenHeight: Float) {
         initializeMeteors(screenWidth)
-        viewModelScope.launch {
+        gameJob.value?.cancel()
+        gameJob.value = viewModelScope.launch {
             while (true) {
                 updateMeteors(screenWidth, screenHeight)
                 checkCollisions()
-                delay(200L)
+                delay(100L)
             }
         }
     }
@@ -45,7 +50,7 @@ class MainViewModel : ViewModel() {
         val initialMeteors = List(3) {
             Meteor(
                 position = Offset(Random.nextFloat() * screenWidth, Random.nextFloat() * -screenWidth),
-                speed = Random.nextFloat() * 5 + 5 // Random speed between 5 and 10
+                speed = Random.nextFloat() * 4 + 5 // Random speed between 5 and 10
             )
         }
         _meteors.value = initialMeteors
@@ -74,13 +79,12 @@ class MainViewModel : ViewModel() {
             val dx = spaceship.x - meteor.position.x
             val dy = spaceship.y - meteor.position.y
             val distance = sqrt(dx * dx + dy * dy)
-            distance < 40 // Встановіть відповідне значення порогу визначення зіткнень
+            distance < 50 // Встановіть відповідне значення порогу визначення зіткнень
         }
         if (collision) {
             _isGameOver.value = true
         }
     }
-
 
     fun moveSpaceship(panDelta: Offset, screenWidth: Float, screenHeight: Float) {
         var newPositionX = _spaceshipPosition.value.x + panDelta.x
@@ -92,9 +96,17 @@ class MainViewModel : ViewModel() {
         _spaceshipPosition.value = Offset(newPositionX, newPositionY)
     }
 
-    fun restart() {
+    fun restart(screenWidth: Float, screenHeight: Float) {
+        _isGameOver.value = false
+        _spaceshipPosition.value = Offset(100f, 100f)
+        initializeMeteors(screenWidth)
+        startGame(screenWidth, screenHeight)
+    }
+
+    fun reset() {
         _isGameOver.value = false
     }
+
 
 
     init {

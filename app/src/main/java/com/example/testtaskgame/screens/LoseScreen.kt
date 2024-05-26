@@ -16,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -26,6 +28,11 @@ fun LoseScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
+    val screenWidth = with(density) { configuration.screenWidthDp.dp.toPx() }
+    val screenHeight = with(density) { configuration.screenHeightDp.dp.toPx() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,7 +47,8 @@ fun LoseScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         IconButton(onClick = {
-            viewModel.restart()
+            viewModel.reset()
+            //navController.popBackStack()
             navController.navigate("main")
         }) {
             Icon(
@@ -49,10 +57,10 @@ fun LoseScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         IconButton(onClick = {
-            navController.clearBackStack("game")
-            navController.clearBackStack("lose")
-            viewModel.restart()
-            navController.popBackStack()
+            viewModel.restart(screenWidth, screenHeight)
+            navController.navigate("game") {
+                popUpTo("lose") { inclusive = true }
+            }
         }) {
             Icon(
                 Icons.Filled.Refresh, contentDescription = "Again"

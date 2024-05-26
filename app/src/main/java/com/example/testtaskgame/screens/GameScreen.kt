@@ -42,9 +42,10 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
     val meteors by viewModel.meteors.collectAsState()
     val isGameOver by viewModel.isGameOver.collectAsState()
 
-    if (isGameOver) {
-        // Відображення екрану програшу
-        navController.navigate("lose")
+    LaunchedEffect(isGameOver) {
+        if (isGameOver) {
+            navController.navigate("lose")
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -82,4 +83,3 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
         )
     }
 }
-
