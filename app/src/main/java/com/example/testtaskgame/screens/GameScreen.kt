@@ -20,11 +20,12 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.testtaskgame.MainViewModel
 import com.example.testtaskgame.R
 
 @Composable
-fun GameScreen(viewModel: MainViewModel) {
+fun GameScreen(viewModel: MainViewModel, navController: NavController) {
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val screenWidth = with(density) { configuration.screenWidthDp.dp.toPx() }
@@ -39,6 +40,12 @@ fun GameScreen(viewModel: MainViewModel) {
 
     val spaceshipPosition by viewModel.spaceshipPosition.collectAsState()
     val meteors by viewModel.meteors.collectAsState()
+    val isGameOver by viewModel.isGameOver.collectAsState()
+
+    if (isGameOver) {
+        // Відображення екрану програшу
+        navController.navigate("lose")
+    }
 
     LaunchedEffect(Unit) {
         viewModel.startGame(screenWidth, screenHeight)
@@ -75,3 +82,4 @@ fun GameScreen(viewModel: MainViewModel) {
         )
     }
 }
+

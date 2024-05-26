@@ -20,6 +20,8 @@ class MainViewModel : ViewModel() {
     private val _meteors = MutableStateFlow<List<Meteor>>(emptyList())
     val meteors: StateFlow<List<Meteor>> = _meteors
 
+    private val _isGameOver = MutableStateFlow(false)
+    val isGameOver: StateFlow<Boolean> = _isGameOver
     fun startLoading() {
         _isLoading.value = true
     }
@@ -34,7 +36,7 @@ class MainViewModel : ViewModel() {
             while (true) {
                 updateMeteors(screenWidth, screenHeight)
                 checkCollisions()
-                delay(100L)
+                delay(200L)
             }
         }
     }
@@ -60,7 +62,7 @@ class MainViewModel : ViewModel() {
         }.toMutableList()
 
         if (Random.nextFloat() < 0.2) { // 20% chance to add a new meteor
-            newMeteors.add(Meteor(position = Offset(Random.nextFloat() * screenWidth, 0f), speed = Random.nextFloat() * 5 + 5))
+            newMeteors.add(Meteor(position = Offset(Random.nextFloat() * screenWidth, 0f), speed = Random.nextFloat() * 4 + 5))
         }
 
         _meteors.value = newMeteors
@@ -72,33 +74,13 @@ class MainViewModel : ViewModel() {
             val dx = spaceship.x - meteor.position.x
             val dy = spaceship.y - meteor.position.y
             val distance = sqrt(dx * dx + dy * dy)
-            distance < 50 // Assumes 50 as collision distance threshold
+            distance < 40 // Встановіть відповідне значення порогу визначення зіткнень
         }
         if (collision) {
-            // Handle collision (e.g., end game)
+            _isGameOver.value = true
         }
     }
 
-    // Оновлення функції onScreenTapped у MainViewModel
-    fun onScreenTapped(position: Offset, density: Float) {
-        val tapPosition = Offset(position.x / density, position.y / density)
-        val dx = tapPosition.x - _spaceshipPosition.value.x
-        val dy = tapPosition.y - _spaceshipPosition.value.y
-        val distance = sqrt(dx * dx + dy * dy)
-        val speed = 5f // Початкова швидкість руху корабля
-        val duration = (distance / speed * 10).toLong() // Тривалість руху до точки
-        val speedX = dx / duration // Швидкість по осі X
-        val speedY = dy / duration // Швидкість по осі Y
-        viewModelScope.launch {
-            repeat(duration.toInt()) {
-                delay(1) // Затримка одиниці часу
-                _spaceshipPosition.value = Offset(
-                    _spaceshipPosition.value.x + speedX,
-                    _spaceshipPosition.value.y + speedY
-                )
-            }
-        }
-    }
 
     fun moveSpaceship(panDelta: Offset, screenWidth: Float, screenHeight: Float) {
         var newPositionX = _spaceshipPosition.value.x + panDelta.x
@@ -109,6 +91,11 @@ class MainViewModel : ViewModel() {
         else if(newPositionY > screenHeight)  newPositionY = screenHeight
         _spaceshipPosition.value = Offset(newPositionX, newPositionY)
     }
+
+    fun restart() {
+        _isGameOver.value = false
+    }
+
 
     init {
         _isLoading.value = true

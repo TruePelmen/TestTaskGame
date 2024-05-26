@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.testtaskgame.MainViewModel
 import com.example.testtaskgame.screens.GameScreen
+import com.example.testtaskgame.screens.LoseScreen
 import com.example.testtaskgame.screens.MainScreen
 import com.example.testtaskgame.screens.ResultsScreen
 import com.example.testtaskgame.screens.SettingsScreen
@@ -20,10 +21,11 @@ fun AppNavigation(modifier: Modifier = Modifier, viewModel: MainViewModel) {
         startDestination = "main"
     ) {
         composable("main") { MainScreen(navController, viewModel) }
-        composable("game") { GameScreen(viewModel) }
+        composable("game") { GameScreen(viewModel, navController) }
         composable("settings") { SettingsScreen(navController) }
         composable("results") { ResultsScreen(navController) }
-        composable("shop") { ShopScreen(navController) }
+        composable("shop") { ShopScreen(navController)}
+        composable("lose") { LoseScreen(navController, viewModel) }
     }
 }
 
