@@ -22,7 +22,7 @@ fun AppNavigation(modifier: Modifier = Modifier, viewModel: MainViewModel) {
     ) {
         composable("main") { MainScreen(navController, viewModel) }
         composable("game") { GameScreen(viewModel, navController) }
-        composable("settings") { SettingsScreen(navController) }
+        composable("settings") { SettingsScreen(navController, viewModel) }
         composable("results") { ResultsScreen(navController) }
         composable("shop") { ShopScreen(navController)}
         composable("lose") { LoseScreen(navController, viewModel) }

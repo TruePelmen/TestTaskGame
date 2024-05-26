@@ -26,6 +26,15 @@ class MainViewModel : ViewModel() {
 
     private var gameJob = MutableStateFlow<Job?>(null)
 
+
+    // Стан для музики
+    private val _isMusicOn  =  MutableStateFlow(true)
+    val isMusicOn: StateFlow<Boolean> =_isMusicOn
+
+    fun toggleMusic() {
+        _isMusicOn.value = !_isMusicOn.value
+    }
+
     fun startLoading() {
         _isLoading.value = true
     }

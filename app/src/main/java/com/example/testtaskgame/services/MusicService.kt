@@ -12,19 +12,18 @@ class MusicService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        // Ініціалізуємо MediaPlayer
         mediaPlayer = MediaPlayer.create(this, R.raw.background_music)
-        mediaPlayer.isLooping = true // Зациклюємо музику
+        mediaPlayer.isLooping = true
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // Запускаємо музику
-        mediaPlayer.start()
+        if (!mediaPlayer.isPlaying) {
+            mediaPlayer.start()
+        }
         return START_STICKY
     }
 
     override fun onDestroy() {
-        // Зупиняємо та звільняємо ресурси
         mediaPlayer.stop()
         mediaPlayer.release()
         super.onDestroy()
@@ -32,5 +31,17 @@ class MusicService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+    fun pauseMusic() {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+        }
+    }
+
+    fun resumeMusic() {
+        if (!mediaPlayer.isPlaying) {
+            mediaPlayer.start()
+        }
     }
 }

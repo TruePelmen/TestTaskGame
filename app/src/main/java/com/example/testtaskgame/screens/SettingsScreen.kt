@@ -19,14 +19,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.testtaskgame.MainActivity
+import com.example.testtaskgame.MainViewModel
+
 
 @Composable
-fun SettingsScreen(navController: NavController) {
+fun SettingsScreen(navController: NavController, viewModel: MainViewModel) {
+    val isMusicOn by viewModel.isMusicOn.collectAsState()
+
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -38,25 +45,17 @@ fun SettingsScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = { navController.navigate("main")}) {
-                        Icon(
-                            Icons.Filled.PlayArrow, contentDescription = "MainScreen"
-                        )
+                    IconButton(onClick = { navController.navigate("main") }) {
+                        Icon(Icons.Filled.PlayArrow, contentDescription = "MainScreen")
                     }
                     IconButton(onClick = { navController.navigate("shop") }) {
-                        Icon(
-                            Icons.Filled.ShoppingCart, contentDescription = "Shop"
-                        )
+                        Icon(Icons.Filled.ShoppingCart, contentDescription = "Shop")
                     }
-                    IconButton(onClick = {navController.navigate("results")}) {
-                        Icon(
-                            Icons.Filled.List, contentDescription = "Results"
-                        )
+                    IconButton(onClick = { navController.navigate("results") }) {
+                        Icon(Icons.Filled.List, contentDescription = "Results")
                     }
-                    IconButton(onClick = {  }) {
-                        Icon(
-                            Icons.Filled.Settings, contentDescription = "Settings", modifier = Modifier.fillMaxSize()
-                        )
+                    IconButton(onClick = { }) {
+                        Icon(Icons.Filled.Settings, contentDescription = "Settings", modifier = Modifier.fillMaxSize())
                     }
                 }
             }
@@ -66,8 +65,15 @@ fun SettingsScreen(navController: NavController) {
             modifier = Modifier.padding(innerPadding).padding(16.dp)
         ) {
             Text(text = "Settings", fontSize = 30.sp, modifier = Modifier.padding(bottom = 16.dp))
-            Button(onClick = { /*TODO: Implement sound settings*/ }, modifier = Modifier.padding(bottom = 8.dp)) {
-                Text(text = "Sound Settings")
+            Button(onClick = {
+                viewModel.toggleMusic()
+                if (isMusicOn) {
+                    (navController.context as MainActivity).stopMusicService()
+                } else {
+                    (navController.context as MainActivity).startMusicService()
+                }
+            }, modifier = Modifier.padding(bottom = 8.dp)) {
+                Text(text = if (isMusicOn) "Turn Music Off" else "Turn Music On")
             }
             Button(onClick = { /*TODO: Implement controls settings*/ }, modifier = Modifier.padding(bottom = 8.dp)) {
                 Text(text = "Controls Settings")
