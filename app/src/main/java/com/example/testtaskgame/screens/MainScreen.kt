@@ -93,7 +93,7 @@ fun MainScreen(navController: NavController) {
                     textAlign = TextAlign.Center
                 )
                 Button(
-                    onClick = { /*TODO: Start game*/ },
+                    onClick = { navController.navigate("game") },
                     modifier = Modifier.padding(top = 20.dp)
                 ) {
                     Text(text = "Play", fontSize = 20.sp)

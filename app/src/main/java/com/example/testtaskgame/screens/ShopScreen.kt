@@ -55,7 +55,9 @@ fun ShopScreen(navController: NavController) {
                     }
                     IconButton(onClick = {  }) {
                         Icon(
-                            Icons.Filled.ShoppingCart, contentDescription = "Shop", modifier = Modifier.fillMaxSize()
+                            Icons.Filled.ShoppingCart,
+                            contentDescription = "Shop",
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                     IconButton(onClick = {navController.navigate("results")}) {
@@ -81,7 +83,10 @@ fun ShopScreen(navController: NavController) {
             items(shopItems) { item ->
                 Column(modifier = Modifier.padding(bottom = 16.dp)) {
                     Text(text = item.name, fontSize = 20.sp)
-                    Text(text = "Price: ${item.price} coins", fontSize = 16.sp, modifier = Modifier.padding(bottom = 8.dp))
+                    Text(
+                        text = "Price: ${item.price} coins",
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(bottom = 8.dp))
                     Button(onClick = { /*TODO: Implement purchase functionality*/ }) {
                         Text(text = "Buy")
                     }
