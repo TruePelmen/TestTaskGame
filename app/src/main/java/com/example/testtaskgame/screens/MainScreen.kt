@@ -1,7 +1,6 @@
 package com.example.testtaskgame.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,8 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.PlayArrow
@@ -30,14 +27,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.testtaskgame.MainViewModel
 import com.example.testtaskgame.R
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavController, viewModel: MainViewModel) {
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -93,7 +90,9 @@ fun MainScreen(navController: NavController) {
                     textAlign = TextAlign.Center
                 )
                 Button(
-                    onClick = { navController.navigate("game") },
+                    onClick = {
+                        navController.navigate("game")
+                    },
                     modifier = Modifier.padding(top = 20.dp)
                 ) {
                     Text(text = "Play", fontSize = 20.sp)

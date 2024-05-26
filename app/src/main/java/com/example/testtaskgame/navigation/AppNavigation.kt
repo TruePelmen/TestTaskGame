@@ -19,7 +19,7 @@ fun AppNavigation(modifier: Modifier = Modifier, viewModel: MainViewModel) {
         navController = navController,
         startDestination = "main"
     ) {
-        composable("main") { MainScreen(navController) }
+        composable("main") { MainScreen(navController, viewModel) }
         composable("game") { GameScreen(viewModel) }
         composable("settings") { SettingsScreen(navController) }
         composable("results") { ResultsScreen(navController) }
