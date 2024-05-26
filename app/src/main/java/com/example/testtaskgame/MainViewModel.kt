@@ -12,10 +12,8 @@ import kotlin.math.sqrt
 import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> get() = _isLoading
 
-    val _spaceshipPosition = MutableStateFlow(Offset(0f, 0f))
+    private val _spaceshipPosition = MutableStateFlow(Offset(0f, 0f))
     val spaceshipPosition: StateFlow<Offset> = _spaceshipPosition
 
     private val _meteors = MutableStateFlow<List<Meteor>>(emptyList())
@@ -26,21 +24,11 @@ class MainViewModel : ViewModel() {
 
     private var gameJob = MutableStateFlow<Job?>(null)
 
-
-    // Стан для музики
     private val _isMusicOn  =  MutableStateFlow(true)
     val isMusicOn: StateFlow<Boolean> =_isMusicOn
 
     fun toggleMusic() {
         _isMusicOn.value = !_isMusicOn.value
-    }
-
-    fun startLoading() {
-        _isLoading.value = true
-    }
-
-    fun stopLoading() {
-        _isLoading.value = false
     }
 
     fun startGame(screenWidth: Float, screenHeight: Float) {
@@ -116,13 +104,9 @@ class MainViewModel : ViewModel() {
         _isGameOver.value = false
     }
 
-
-
     init {
-        _isLoading.value = true
         viewModelScope.launch {
             delay(3000L)
-            stopLoading()
         }
     }
 }

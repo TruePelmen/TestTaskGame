@@ -32,16 +32,4 @@ class MusicService : Service() {
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-
-    fun pauseMusic() {
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.pause()
-        }
-    }
-
-    fun resumeMusic() {
-        if (!mediaPlayer.isPlaying) {
-            mediaPlayer.start()
-        }
-    }
 }

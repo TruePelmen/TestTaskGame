@@ -31,13 +31,6 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
     val screenWidth = with(density) { configuration.screenWidthDp.dp.toPx() }
     val screenHeight = with(density) { configuration.screenHeightDp.dp.toPx() }
 
-    Image(
-        painter = painterResource(id = R.drawable.space_sky),
-        contentDescription = "Background",
-        modifier = Modifier.fillMaxSize(),
-        contentScale = ContentScale.FillBounds
-    )
-
     val spaceshipPosition by viewModel.spaceshipPosition.collectAsState()
     val meteors by viewModel.meteors.collectAsState()
     val isGameOver by viewModel.isGameOver.collectAsState()
@@ -51,6 +44,13 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
     LaunchedEffect(Unit) {
         viewModel.startGame(screenWidth, screenHeight)
     }
+
+    Image(
+        painter = painterResource(id = R.drawable.space_sky),
+        contentDescription = "Background",
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.FillBounds
+    )
 
     Box(
         Modifier

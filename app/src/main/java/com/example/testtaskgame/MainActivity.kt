@@ -1,6 +1,5 @@
 package com.example.testtaskgame
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -67,27 +66,6 @@ class MainActivity : ComponentActivity() {
     fun stopMusicService() {
         val intent = Intent(this, MusicService::class.java)
         stopService(intent)
-    }
-
-    private fun toggleMusicService(context: Context, isMusicOn: Boolean) {
-        val intent = Intent(context, MusicService::class.java)
-        if (isMusicOn) {
-            startService(intent)
-        } else {
-            stopService(intent)
-        }
-    }
-
-    private fun pauseMusicService() {
-        val intent = Intent(this, MusicService::class.java)
-        intent.action = "PAUSE_MUSIC"
-        startService(intent)
-    }
-
-    private fun resumeMusicService() {
-        val intent = Intent(this, MusicService::class.java)
-        intent.action = "RESUME_MUSIC"
-        startService(intent)
     }
 }
 
