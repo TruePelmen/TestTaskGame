@@ -1,11 +1,13 @@
 package com.example.testtaskgame
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.example.testtaskgame.navigation.AppNavigation
+import com.example.testtaskgame.services.MusicService
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,11 +45,28 @@ class MainActivity : ComponentActivity() {
 //                animatorSet.start()
 //            }
 //        }
+        startMusicService()
 
         enableEdgeToEdge()
         setContent {
             AppNavigation(viewModel = viewModel)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Зупинити службу при знищенні активності
+        stopMusicService()
+    }
+
+    private fun startMusicService() {
+        val intent = Intent(this, MusicService::class.java)
+        startService(intent)
+    }
+
+    private fun stopMusicService() {
+        val intent = Intent(this, MusicService::class.java)
+        stopService(intent)
     }
 }
 
