@@ -21,12 +21,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.example.testtaskgame.navigation.AppNavigation
 import com.example.testtaskgame.screens.LoadingScreen
 import com.example.testtaskgame.screens.MainScreen
 import com.example.testtaskgame.ui.theme.TestTaskGameTheme
@@ -70,9 +74,7 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            TestTaskGameTheme{
-                    MainScreen()
-            }
+            AppNavigation()
         }
     }
 }

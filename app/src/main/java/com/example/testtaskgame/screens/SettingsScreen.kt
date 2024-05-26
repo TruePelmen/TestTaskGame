@@ -1,16 +1,11 @@
 package com.example.testtaskgame.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.PlayArrow
@@ -26,18 +21,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.testtaskgame.R
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun SettingsScreen(navController: NavController) {
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -49,9 +38,9 @@ fun MainScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { navController.navigate("main")}) {
                         Icon(
-                            Icons.Filled.PlayArrow, contentDescription = "MainScreen", modifier = Modifier.fillMaxSize()
+                            Icons.Filled.PlayArrow, contentDescription = "MainScreen"
                         )
                     }
                     IconButton(onClick = { navController.navigate("shop") }) {
@@ -59,45 +48,32 @@ fun MainScreen(navController: NavController) {
                             Icons.Filled.ShoppingCart, contentDescription = "Shop"
                         )
                     }
-                    IconButton(onClick = { navController.navigate("results")}) {
+                    IconButton(onClick = {navController.navigate("results")}) {
                         Icon(
                             Icons.Filled.List, contentDescription = "Results"
                         )
                     }
-                    IconButton(onClick = { navController.navigate("settings") }) {
+                    IconButton(onClick = {  }) {
                         Icon(
-                            Icons.Filled.Settings, contentDescription = "Settings"
+                            Icons.Filled.Settings, contentDescription = "Settings", modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
             }
         }
     ) { innerPadding ->
-        Image(
-            painter = painterResource(id = R.drawable.space_sky),
-            contentDescription = "Background",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillBounds
-        )
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(innerPadding)) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Text(
-                    text = "Welcome to Space Odyssey",
-                    Modifier.padding(20.dp),
-                    color = Color.Magenta,
-                    fontSize = 25.sp,
-                    textAlign = TextAlign.Center
-                )
-                Button(
-                    onClick = { /*TODO: Start game*/ },
-                    modifier = Modifier.padding(top = 20.dp)
-                ) {
-                    Text(text = "Play", fontSize = 20.sp)
-                }
+        Column(
+            modifier = Modifier.padding(innerPadding).padding(16.dp)
+        ) {
+            Text(text = "Settings", fontSize = 30.sp, modifier = Modifier.padding(bottom = 16.dp))
+            Button(onClick = { /*TODO: Implement sound settings*/ }, modifier = Modifier.padding(bottom = 8.dp)) {
+                Text(text = "Sound Settings")
+            }
+            Button(onClick = { /*TODO: Implement controls settings*/ }, modifier = Modifier.padding(bottom = 8.dp)) {
+                Text(text = "Controls Settings")
+            }
+            Button(onClick = { /*TODO: Implement graphics settings*/ }, modifier = Modifier.padding(bottom = 8.dp)) {
+                Text(text = "Graphics Settings")
             }
         }
     }
