@@ -2,7 +2,7 @@ package com.example.testtaskgame.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -48,8 +49,10 @@ fun GameScreen(viewModel: MainViewModel) {
             .fillMaxSize()
             .background(Color.Transparent)
             .pointerInput(Unit) {
-                detectTapGestures { position ->
-                    viewModel.onScreenTapped(position, density.density)
+                detectDragGestures { change, dragAmount ->
+                    change.consume()
+                    val delta = Offset(dragAmount.x, dragAmount.y)
+                    viewModel.moveSpaceship(delta, screenWidth, screenHeight)
                 }
             }
     ) {
@@ -68,7 +71,7 @@ fun GameScreen(viewModel: MainViewModel) {
             contentDescription = "Spaceship",
             modifier = Modifier
                 .offset(x = spaceshipPosition.x.dp, y = spaceshipPosition.y.dp)
-                .size(70.dp)
+                .size(60.dp)
         )
     }
 }

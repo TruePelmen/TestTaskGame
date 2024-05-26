@@ -14,7 +14,7 @@ class MainViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> get() = _isLoading
 
-    private val _spaceshipPosition = MutableStateFlow(Offset(0f, 0f))
+    val _spaceshipPosition = MutableStateFlow(Offset(0f, 0f))
     val spaceshipPosition: StateFlow<Offset> = _spaceshipPosition
 
     private val _meteors = MutableStateFlow<List<Meteor>>(emptyList())
@@ -79,9 +79,35 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    // Оновлення функції onScreenTapped у MainViewModel
     fun onScreenTapped(position: Offset, density: Float) {
-        val newPosition = Offset(position.x / density, position.y / density)
-        _spaceshipPosition.value = newPosition
+        val tapPosition = Offset(position.x / density, position.y / density)
+        val dx = tapPosition.x - _spaceshipPosition.value.x
+        val dy = tapPosition.y - _spaceshipPosition.value.y
+        val distance = sqrt(dx * dx + dy * dy)
+        val speed = 5f // Початкова швидкість руху корабля
+        val duration = (distance / speed * 10).toLong() // Тривалість руху до точки
+        val speedX = dx / duration // Швидкість по осі X
+        val speedY = dy / duration // Швидкість по осі Y
+        viewModelScope.launch {
+            repeat(duration.toInt()) {
+                delay(1) // Затримка одиниці часу
+                _spaceshipPosition.value = Offset(
+                    _spaceshipPosition.value.x + speedX,
+                    _spaceshipPosition.value.y + speedY
+                )
+            }
+        }
+    }
+
+    fun moveSpaceship(panDelta: Offset, screenWidth: Float, screenHeight: Float) {
+        var newPositionX = _spaceshipPosition.value.x + panDelta.x
+        var newPositionY = _spaceshipPosition.value.y + panDelta.y
+        if(newPositionX < 0) newPositionX = 0F
+        else if(newPositionX > screenWidth)  newPositionX = screenWidth
+        if(newPositionY < 0) newPositionY = 0F
+        else if(newPositionY > screenHeight)  newPositionY = screenHeight
+        _spaceshipPosition.value = Offset(newPositionX, newPositionY)
     }
 
     init {
@@ -92,7 +118,5 @@ class MainViewModel : ViewModel() {
         }
     }
 }
-
-
 
 data class Meteor(val position: Offset, val speed: Float)
