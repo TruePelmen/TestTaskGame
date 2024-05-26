@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            AppNavigation()
+            AppNavigation(viewModel = viewModel)
         }
     }
 }
