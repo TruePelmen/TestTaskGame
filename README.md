@@ -27,3 +27,7 @@ The game offers a simple yet addictive gameplay experience with the challenge of
 - **LiveData:** For data observation and lifecycle awareness.
 - **Canvas API:** For custom drawing of game elements like the spaceship and asteroids.
 - **Material Design:** For implementing UI components following Material Design guidelines.
+- **ViewModel:** For managing UI-related data in a lifecycle-conscious way.
+- **Navigation:** For handling in-app navigation and ensuring a smooth user experience.
+- **MusicService:** For background music management during gameplay.
+
