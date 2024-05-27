@@ -40,6 +40,14 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
     val isGameOver by viewModel.isGameOver.collectAsState()
     val coins by viewModel.coins.collectAsState()
     val collectedCoins by viewModel.collectedCoins.collectAsState()
+    val selectedSpaceship by viewModel.selectedSpaceship.collectAsState()
+
+    val spaceshipImageRes = when (selectedSpaceship) {
+        "Spaceship 1" -> R.drawable.spaceship_2
+        "Spaceship 2" -> R.drawable.spaceship_3
+        "Spaceship 3" -> R.drawable.spaceship_4
+        else -> R.drawable.spaceship
+    }
 
     LaunchedEffect(isGameOver) {
         if (isGameOver) {
@@ -92,11 +100,11 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
         }
 
         Image(
-            painter = painterResource(id = R.drawable.spaceship),
+            painter = painterResource(id = spaceshipImageRes),
             contentDescription = "Spaceship",
             modifier = Modifier
+                .size(70.dp)
                 .offset(x = spaceshipPosition.x.dp, y = spaceshipPosition.y.dp)
-                .size(60.dp)
         )
 
         Text(

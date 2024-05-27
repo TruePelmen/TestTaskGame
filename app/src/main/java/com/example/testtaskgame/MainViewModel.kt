@@ -47,6 +47,25 @@ class MainViewModel : ViewModel() {
     private val _totalCoins = MutableStateFlow(0)
     val totalCoins: StateFlow<Int> = _totalCoins
 
+    private val _ownedSpaceships = MutableStateFlow(setOf("Default Spaceship"))
+    val ownedSpaceships: StateFlow<Set<String>> = _ownedSpaceships
+
+    private val _selectedSpaceship = MutableStateFlow("Default Spaceship")
+    val selectedSpaceship: StateFlow<String> = _selectedSpaceship
+
+    fun buySpaceship(spaceship: String, price: Int) {
+        if (_totalCoins.value >= price) {
+            _totalCoins.value -= price
+            _ownedSpaceships.value = _ownedSpaceships.value + spaceship
+        }
+    }
+
+    fun selectSpaceship(spaceship: String) {
+        if (spaceship in _ownedSpaceships.value) {
+            _selectedSpaceship.value = spaceship
+        }
+    }
+
     fun addCollectedCoins(coins: Int) {
         _totalCoins.value += coins
     }
