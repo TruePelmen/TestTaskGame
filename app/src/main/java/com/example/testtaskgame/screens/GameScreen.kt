@@ -6,11 +6,14 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -20,6 +23,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.testtaskgame.MainViewModel
 import com.example.testtaskgame.R
@@ -35,6 +39,7 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
     val meteors by viewModel.meteors.collectAsState()
     val isGameOver by viewModel.isGameOver.collectAsState()
     val coins by viewModel.coins.collectAsState()
+    val collectedCoins by viewModel.collectedCoins.collectAsState()
 
     LaunchedEffect(isGameOver) {
         if (isGameOver) {
@@ -91,6 +96,15 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
             modifier = Modifier
                 .offset(x = spaceshipPosition.x.dp, y = spaceshipPosition.y.dp)
                 .size(60.dp)
+        )
+
+        Text(
+            text = "Coins: $collectedCoins",
+            color = Color.White,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(16.dp)
         )
     }
 }

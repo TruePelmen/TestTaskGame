@@ -13,6 +13,20 @@ import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> get() = _isLoading
+
+    fun startLoading() {
+        _isLoading.value = true
+    }
+
+    fun stopLoading() {
+        _isLoading.value = false
+    }
+
+    private val _collectedCoins = MutableStateFlow(0)
+    val collectedCoins: StateFlow<Int> = _collectedCoins
+
     private val _spaceshipPosition = MutableStateFlow(Offset(0f, 0f))
     val spaceshipPosition: StateFlow<Offset> = _spaceshipPosition
 
@@ -122,9 +136,8 @@ class MainViewModel : ViewModel() {
             distance < 40 // Встановіть відповідне значення порогу зіткнень з монеткою
         }
         if (collectedCoinIndex != -1) {
-            // Видалення зібраної монетки та додавання рахунку гравця
             _coins.value = _coins.value.toMutableList().apply { removeAt(collectedCoinIndex) }
-            // Додайте код для збільшення рахунку гравця
+            _collectedCoins.value += 1 // Збільшення кількості зібраних монеток
         }
     }
 
@@ -142,7 +155,9 @@ class MainViewModel : ViewModel() {
     fun restart(screenWidth: Float, screenHeight: Float) {
         _isGameOver.value = false
         _spaceshipPosition.value = Offset(100f, 100f)
+        _collectedCoins.value = 0 // Скидання кількості зібраних монеток
         initializeMeteors(screenWidth)
+        initializeCoins(screenWidth)
         startGame(screenWidth, screenHeight)
     }
 
@@ -151,8 +166,10 @@ class MainViewModel : ViewModel() {
     }
 
     init {
+        _isLoading.value = true
         viewModelScope.launch {
             delay(3000L)
+            stopLoading()
         }
     }
 }

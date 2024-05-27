@@ -13,6 +13,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,14 +26,13 @@ import androidx.navigation.NavController
 import com.example.testtaskgame.MainViewModel
 
 @Composable
-fun LoseScreen(
-    navController: NavController,
-    viewModel: MainViewModel
-) {
+fun LoseScreen(navController: NavController, viewModel: MainViewModel) {
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val screenWidth = with(density) { configuration.screenWidthDp.dp.toPx() }
     val screenHeight = with(density) { configuration.screenHeightDp.dp.toPx() }
+
+    val collectedCoins by viewModel.collectedCoins.collectAsState()
 
     Column(
         modifier = Modifier
@@ -46,9 +47,14 @@ fun LoseScreen(
             fontSize = 24.sp
         )
         Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Coins collected: $collectedCoins",
+            color = Color.White,
+            fontSize = 20.sp
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         IconButton(onClick = {
             viewModel.reset()
-            //navController.popBackStack()
             navController.navigate("main")
         }) {
             Icon(
