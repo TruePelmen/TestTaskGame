@@ -21,6 +21,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,6 +43,8 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
     val density = LocalDensity.current
     val screenWidth = with(density) { configuration.screenWidthDp.dp.toPx() }
     val screenHeight = with(density) { configuration.screenHeightDp.dp.toPx() }
+    val totalCoins by viewModel.totalCoins.collectAsState()
+
     Scaffold(
         bottomBar = {
             BottomAppBar(
@@ -93,6 +97,13 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
                     Modifier.padding(20.dp),
                     color = Color.Magenta,
                     fontSize = 25.sp,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    text = "Total Coins: $totalCoins",
+                    Modifier.padding(top = 10.dp),
+                    color = Color.White,
+                    fontSize = 20.sp,
                     textAlign = TextAlign.Center
                 )
                 Button(

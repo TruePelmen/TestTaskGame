@@ -44,6 +44,13 @@ class MainViewModel : ViewModel() {
     private val _coins = MutableStateFlow<List<Coin>>(emptyList())
     val coins: StateFlow<List<Coin>> = _coins
 
+    private val _totalCoins = MutableStateFlow(0)
+    val totalCoins: StateFlow<Int> = _totalCoins
+
+    fun addCollectedCoins(coins: Int) {
+        _totalCoins.value += coins
+    }
+
     private fun initializeCoins(screenWidth: Float) {
         val initialCoins = List(1) {
             Coin(position = Offset(Random.nextFloat() * screenWidth, Random.nextFloat() * -screenWidth))

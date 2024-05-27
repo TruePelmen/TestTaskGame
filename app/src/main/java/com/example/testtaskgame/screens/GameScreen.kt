@@ -43,6 +43,7 @@ fun GameScreen(viewModel: MainViewModel, navController: NavController) {
 
     LaunchedEffect(isGameOver) {
         if (isGameOver) {
+            viewModel.addCollectedCoins(viewModel.collectedCoins.value)
             navController.navigate("lose")
         }
     }
