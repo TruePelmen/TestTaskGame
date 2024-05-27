@@ -127,7 +127,7 @@ class MainViewModel : ViewModel() {
             val dx = spaceship.x - meteor.position.x
             val dy = spaceship.y - meteor.position.y
             val distance = sqrt(dx * dx + dy * dy)
-            distance < 50 // Встановіть відповідне значення порогу визначення зіткнень
+            distance < 40 // Встановіть відповідне значення порогу визначення зіткнень
         }
         if (collision) {
             _isGameOver.value = true
