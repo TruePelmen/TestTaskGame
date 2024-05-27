@@ -10,3 +10,9 @@ The game offers a simple yet addictive gameplay experience with the challenge of
 - **Upgradable Spaceships:** Visit the in-game shop to buy new and improved spaceships using the coins you collect.
 - **Simple Controls:** Intuitive controls make it easy for anyone to pick up and play.
 
+## How to Play
+
+1. **Navigate:** Use touch or drag controls to move your spaceship around the screen.
+2. **Avoid Asteroids:** Keep an eye out for incoming asteroids and steer clear to avoid collisions.
+3. **Collect Coins:** Gather as many coins as you can during your journey.
+4. **Change your Spaceship:** Visit the shop to buy new spaceships with the coins you've collected.
